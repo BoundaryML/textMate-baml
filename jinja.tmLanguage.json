@@ -26,11 +26,11 @@
     },
     {
       "begin": "{{-?",
-      "captures": [
-        {
+      "captures": {
+        "1": {
           "name": "storage.type.jinja.delimiter"
         }
-      ],
+      },
       "end": "-?}}",
       "name": "variable.meta.scope.jinja",
       "patterns": [
@@ -41,11 +41,11 @@
     },
     {
       "begin": "{%-?",
-      "captures": [
-        {
+      "captures": {
+        "1": {
           "name": "storage.type.jinja.delimiter"
         }
-      ],
+      },
       "end": "-?%}",
       "name": "meta.scope.jinja.tag",
       "patterns": [
@@ -58,11 +58,11 @@
   "repository": {
     "comments": {
       "begin": "{#-?",
-      "captures": [
-        {
+      "captures": {
+        "1": {
           "name": "storage.type.jinja.delimiter"
         }
-      ],
+      },
       "end": "-?#}",
       "name": "comment.block.jinja",
       "patterns": [
