@@ -177,7 +177,7 @@
         {
           "begin": "\\[",
           "captures": {
-            "0": {
+            "1": {
               "name": "punctuation.other.jinja"
             }
           },
@@ -191,7 +191,7 @@
         {
           "begin": "\\(",
           "captures": {
-            "0": {
+            "1": {
               "name": "punctuation.other.jinja"
             }
           },
@@ -205,7 +205,7 @@
         {
           "begin": "\\{",
           "captures": {
-            "0": {
+            "1": {
               "name": "punctuation.other.jinja"
             }
           },
@@ -231,13 +231,13 @@
         {
           "begin": "\"",
           "beginCaptures": {
-            "0": {
+            "1": {
               "name": "punctuation.definition.string.begin.jinja"
             }
           },
           "end": "\"",
           "endCaptures": {
-            "0": {
+            "1": {
               "name": "punctuation.definition.string.end.jinja"
             }
           },
@@ -251,13 +251,13 @@
         {
           "begin": "'",
           "beginCaptures": {
-            "0": {
+            "1": {
               "name": "punctuation.definition.string.begin.jinja"
             }
           },
           "end": "'",
           "endCaptures": {
-            "0": {
+            "1": {
               "name": "punctuation.definition.string.end.jinja"
             }
           },
@@ -271,13 +271,13 @@
         {
           "begin": "@/",
           "beginCaptures": {
-            "0": {
+            "1": {
               "name": "punctuation.definition.regexp.begin.jinja"
             }
           },
           "end": "/",
           "endCaptures": {
-            "0": {
+            "1": {
               "name": "punctuation.definition.regexp.end.jinja"
             }
           },
