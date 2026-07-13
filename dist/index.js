@@ -1645,6 +1645,9 @@ const grammar = {
           "include": "#constructor-field"
         },
         {
+          "include": "#constructor-field-shorthand"
+        },
+        {
           "include": "#comma"
         }
       ]
@@ -1686,6 +1689,24 @@ const grammar = {
         },
         "2": {
           "name": "punctuation.separator.colon.baml"
+        }
+      },
+      "end": "(?=,|\\})",
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#expression"
+        }
+      ]
+    },
+    "constructor-field-shorthand": {
+      "name": "meta.constructor.field.baml",
+      "begin": "(?:^|(?<=[{,])|(?<=\\*/))[ \\t]*(\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*)[ \\t]+(?=#+\"|\"|b\"|\\`|\\[|[0-9+-]|true\\b|false\\b|null\\b|env\\b)",
+      "beginCaptures": {
+        "1": {
+          "name": "variable.other.property.baml"
         }
       },
       "end": "(?=,|\\})",

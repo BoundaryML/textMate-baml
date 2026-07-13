@@ -1,6 +1,6 @@
 {
   "name": "@boundaryml/baml-grammar",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "TextMate grammar for the BAML language, with a ready-to-use Shiki LanguageRegistration export.",
   "license": "Apache-2.0",
