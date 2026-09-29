@@ -3944,7 +3944,7 @@ const grammar = {
       ]
     },
     "spawn-with-clause": {
-      "name": "meta.spawn.options.baml",
+      "name": "meta.spawn.modifiers.baml",
       "begin": "\\b(with)\\b",
       "beginCaptures": {
         "1": {
