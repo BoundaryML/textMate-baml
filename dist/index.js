@@ -703,7 +703,7 @@ const grammar = {
           "include": "#backtick-interpolation"
         },
         {
-          "include": "#backtick-string-escape"
+          "include": "#string-escape"
         }
       ]
     },
@@ -726,7 +726,7 @@ const grammar = {
           "include": "#backtick-interpolation"
         },
         {
-          "include": "#backtick-string-escape"
+          "include": "#string-escape"
         }
       ]
     },
@@ -749,7 +749,7 @@ const grammar = {
           "include": "#backtick-interpolation"
         },
         {
-          "include": "#backtick-string-escape"
+          "include": "#string-escape"
         }
       ]
     },
@@ -772,7 +772,7 @@ const grammar = {
           "include": "#backtick-interpolation"
         },
         {
-          "include": "#backtick-string-escape"
+          "include": "#string-escape"
         }
       ]
     },
@@ -795,7 +795,7 @@ const grammar = {
           "include": "#backtick-interpolation"
         },
         {
-          "include": "#backtick-string-escape"
+          "include": "#string-escape"
         }
       ]
     },
@@ -818,7 +818,7 @@ const grammar = {
           "include": "#backtick-interpolation"
         },
         {
-          "include": "#backtick-string-escape"
+          "include": "#string-escape"
         }
       ]
     },
@@ -841,7 +841,7 @@ const grammar = {
           "include": "#backtick-interpolation"
         },
         {
-          "include": "#backtick-string-escape"
+          "include": "#string-escape"
         }
       ]
     },
@@ -864,23 +864,7 @@ const grammar = {
           "include": "#backtick-interpolation"
         },
         {
-          "include": "#backtick-string-escape"
-        }
-      ]
-    },
-    "backtick-string-escape": {
-      "patterns": [
-        {
-          "include": "#string-escape-control"
-        },
-        {
-          "include": "#string-escape-quoted-delimiter"
-        },
-        {
-          "include": "#backtick-string-escape-delimiter"
-        },
-        {
-          "include": "#string-escape-unknown"
+          "include": "#string-escape"
         }
       ]
     },
@@ -1056,22 +1040,21 @@ const grammar = {
           "include": "#byte-string-escape-hex"
         },
         {
-          "include": "#byte-string-escape-control"
+          "include": "#string-escape-control"
         },
         {
           "include": "#string-escape-quoted-delimiter"
         },
         {
-          "include": "#byte-string-escape-invalid-hex"
+          "include": "#backtick-string-escape-delimiter"
         },
         {
           "include": "#byte-string-escape-invalid"
+        },
+        {
+          "include": "#byte-string-non-ascii"
         }
       ]
-    },
-    "byte-string-escape-control": {
-      "name": "constant.character.escape.control.baml",
-      "match": "\\\\[ntr0]"
     },
     "byte-string-escape-hex": {
       "name": "constant.character.escape.hex.baml",
@@ -1079,11 +1062,7 @@ const grammar = {
     },
     "byte-string-escape-invalid": {
       "name": "invalid.illegal.escape.baml",
-      "match": "\\\\."
-    },
-    "byte-string-escape-invalid-hex": {
-      "name": "invalid.illegal.escape.hex.baml",
-      "match": "\\\\x(?:[0-9A-Fa-f]{0,1}(?=[\"\\\\]|$)|[0-9A-Fa-f]?[^0-9A-Fa-f\"\\\\])"
+      "match": "\\\\(?:x[0-9A-Fa-f]?|u(?:\\{[^}\"\\\\]*\\}?|[0-9A-Fa-f]{0,4})|.|$)"
     },
     "byte-string-literal": {
       "name": "string.quoted.binary.double.baml",
@@ -1107,6 +1086,10 @@ const grammar = {
           "include": "#byte-string-escape"
         }
       ]
+    },
+    "byte-string-non-ascii": {
+      "name": "invalid.illegal.character.baml",
+      "match": "[^\\x00-\\x7F]+"
     },
     "call-arguments": {
       "name": "meta.function-call.arguments.baml",
@@ -3107,6 +3090,9 @@ const grammar = {
           "include": "#byte-string-literal"
         },
         {
+          "include": "#raw-quoted-string-literal"
+        },
+        {
           "include": "#type-literal"
         }
       ]
@@ -3714,6 +3700,32 @@ const grammar = {
       "name": "support.type.primitive.baml",
       "match": "\\b(?:int|float|bigint|string|bool|image|audio|map|json|unknown|never|Self)\\b"
     },
+    "raw-quoted-string-escaped-char": {
+      "match": "\\\\."
+    },
+    "raw-quoted-string-literal": {
+      "name": "string.quoted.raw.double.baml",
+      "begin": "\\b(r)(\")",
+      "beginCaptures": {
+        "1": {
+          "name": "storage.type.string.baml"
+        },
+        "2": {
+          "name": "punctuation.definition.string.begin.baml"
+        }
+      },
+      "end": "\"",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.end.baml"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#raw-quoted-string-escaped-char"
+        }
+      ]
+    },
     "raw-string": {
       "patterns": [
         {
@@ -4004,21 +4016,38 @@ const grammar = {
           "include": "#string-escape-quoted-delimiter"
         },
         {
-          "include": "#string-escape-unknown"
+          "include": "#backtick-string-escape-delimiter"
+        },
+        {
+          "include": "#string-escape-hex"
+        },
+        {
+          "include": "#string-escape-unicode"
+        },
+        {
+          "include": "#string-escape-invalid"
         }
       ]
     },
     "string-escape-control": {
       "name": "constant.character.escape.control.baml",
-      "match": "\\\\[ntr0bvf]"
+      "match": "\\\\[ntr0bf]"
+    },
+    "string-escape-hex": {
+      "name": "constant.character.escape.hex.baml",
+      "match": "\\\\x[0-7][0-9A-Fa-f]"
+    },
+    "string-escape-invalid": {
+      "name": "invalid.illegal.escape.baml",
+      "match": "\\\\(?:x[0-9A-Fa-f]{0,2}|u(?:\\{[^}\"\\\\]*\\}?|[0-9A-Fa-f]{0,3})|.|$)"
     },
     "string-escape-quoted-delimiter": {
       "name": "constant.character.escape.delimiter.baml",
-      "match": "\\\\[\"\\\\]"
+      "match": "\\\\[\"\\\\'/]"
     },
-    "string-escape-unknown": {
-      "name": "constant.character.escape.unknown.baml",
-      "match": "\\\\."
+    "string-escape-unicode": {
+      "name": "constant.character.escape.unicode.baml",
+      "match": "\\\\u(?:[0-9A-Fa-f]{4}|\\{[0-9A-Fa-f](?:_?[0-9A-Fa-f])*\\})"
     },
     "string-literal": {
       "name": "string.quoted.double.baml",
