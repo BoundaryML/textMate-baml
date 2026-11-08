@@ -17,6 +17,9 @@ const grammar = {
       "include": "#client"
     },
     {
+      "include": "#client-value"
+    },
+    {
       "include": "#retry-policy"
     },
     {
@@ -183,7 +186,7 @@ const grammar = {
       ]
     },
     "associated-type-extends": {
-      "name": "keyword.operator.extends.baml",
+      "name": "keyword.operator.expression.extends.baml",
       "match": "\\bextends\\b"
     },
     "associated-type-projection": {
@@ -310,7 +313,7 @@ const grammar = {
       "match": "\\b\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*\\b"
     },
     "await-expression": {
-      "name": "keyword.operator.await.baml",
+      "name": "keyword.operator.expression.await.baml",
       "match": "\\bawait\\b"
     },
     "backtick-else": {
@@ -1381,6 +1384,30 @@ const grammar = {
         }
       ]
     },
+    "client-value": {
+      "name": "meta.client.baml",
+      "begin": "^\\s*(client)\\s+(\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*)\\s*(=)(?!=)",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.declaration.client.baml"
+        },
+        "2": {
+          "name": "entity.name.client.baml"
+        },
+        "3": {
+          "name": "keyword.operator.assignment.baml"
+        }
+      },
+      "end": "(?=;|^\\s*(?:client|retry_policy|generator|template_string|class|enum|interface|implements|implement|function|testset|test|type)\\b|^\\s*(?:let|const)\\b)",
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#expression"
+        }
+      ]
+    },
     "code-block": {
       "name": "meta.block.code.baml",
       "begin": "\\{",
@@ -1500,7 +1527,7 @@ const grammar = {
       "begin": "\\b(is)\\b",
       "beginCaptures": {
         "1": {
-          "name": "keyword.operator.is.baml"
+          "name": "keyword.operator.expression.is.baml"
         }
       },
       "end": "(?=\\s*(?:&&|\\|\\||=>|[,);\\]}{]|$))",
@@ -1807,7 +1834,7 @@ const grammar = {
       ]
     },
     "declaration-type-parameter-extends": {
-      "name": "keyword.operator.extends.baml",
+      "name": "keyword.operator.expression.extends.baml",
       "match": "\\bextends\\b"
     },
     "declaration-type-parameter-intersection": {
@@ -2203,7 +2230,7 @@ const grammar = {
       ]
     },
     "for-in-keyword": {
-      "name": "keyword.operator.in.baml",
+      "name": "keyword.operator.expression.in.baml",
       "match": "\\bin\\b"
     },
     "for-in-pattern": {
@@ -2806,7 +2833,7 @@ const grammar = {
           "name": "variable.other.property.interface.baml"
         },
         "2": {
-          "name": "keyword.operator.as.baml"
+          "name": "keyword.operator.expression.as.baml"
         },
         "3": {
           "name": "variable.other.property.baml"
@@ -2896,7 +2923,7 @@ const grammar = {
       "begin": "\\b(is)\\b",
       "beginCaptures": {
         "1": {
-          "name": "keyword.operator.is.baml"
+          "name": "keyword.operator.expression.is.baml"
         }
       },
       "end": "(?=\\s*(?:&&|\\|\\||=>|[,);\\]}]|$))",
@@ -2956,7 +2983,7 @@ const grammar = {
       "begin": "\\b(throws)\\b",
       "beginCaptures": {
         "1": {
-          "name": "keyword.operator.throws.baml"
+          "name": "keyword.operator.expression.throws.baml"
         }
       },
       "end": "(?=\\{)",
@@ -3031,7 +3058,7 @@ const grammar = {
       "begin": "\\b(extends)\\b",
       "beginCaptures": {
         "1": {
-          "name": "keyword.operator.extends.baml"
+          "name": "keyword.operator.expression.extends.baml"
         }
       },
       "end": "(?=\\s*=)",
@@ -3941,7 +3968,7 @@ const grammar = {
       "begin": "\\b(spawn)\\b",
       "beginCaptures": {
         "1": {
-          "name": "keyword.operator.spawn.baml"
+          "name": "keyword.operator.expression.spawn.baml"
         }
       },
       "end": "(?<=\\})|(?=,|;|$)",
@@ -3991,7 +4018,7 @@ const grammar = {
       "begin": "\\b(with)\\b",
       "beginCaptures": {
         "1": {
-          "name": "keyword.operator.with.baml"
+          "name": "keyword.operator.expression.with.baml"
         }
       },
       "end": "(?=\\{)",
@@ -4522,7 +4549,7 @@ const grammar = {
       ]
     },
     "test-with-keyword": {
-      "name": "keyword.operator.with.baml",
+      "name": "keyword.operator.expression.with.baml",
       "match": "\\bwith\\b"
     },
     "testset": {
@@ -4605,7 +4632,7 @@ const grammar = {
       "match": "->"
     },
     "type-as-operator": {
-      "name": "keyword.operator.as.baml",
+      "name": "keyword.operator.expression.as.baml",
       "match": "\\bas\\b"
     },
     "type-expression": {
@@ -4729,7 +4756,7 @@ const grammar = {
       }
     },
     "type-throws-operator": {
-      "name": "keyword.operator.throws.baml",
+      "name": "keyword.operator.expression.throws.baml",
       "match": "\\bthrows\\b"
     },
     "typed-binding-pattern": {
@@ -4759,7 +4786,7 @@ const grammar = {
           "name": "punctuation.accessor.baml"
         },
         "2": {
-          "name": "keyword.operator.as.baml"
+          "name": "keyword.operator.expression.as.baml"
         }
       },
       "end": "(?<=>)",
