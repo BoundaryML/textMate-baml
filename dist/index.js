@@ -1256,6 +1256,9 @@ const grammar = {
         },
         {
           "include": "#semicolon"
+        },
+        {
+          "include": "#comma"
         }
       ]
     },
@@ -1512,6 +1515,9 @@ const grammar = {
           "include": "#field-access-expression"
         },
         {
+          "include": "#tuple-field-access-expression"
+        },
+        {
           "include": "#expression-operator"
         },
         {
@@ -1553,6 +1559,9 @@ const grammar = {
         },
         {
           "include": "#array-destructure-pattern"
+        },
+        {
+          "include": "#tuple-destructure-pattern"
         },
         {
           "include": "#bare-binding-pattern"
@@ -2075,6 +2084,9 @@ const grammar = {
           "include": "#field-access-expression"
         },
         {
+          "include": "#tuple-field-access-expression"
+        },
+        {
           "include": "#expression-operator"
         },
         {
@@ -2175,7 +2187,7 @@ const grammar = {
     },
     "field": {
       "name": "meta.field.baml",
-      "begin": "(?:^\\s*|(?<=\\{)\\s*)(?!@)(\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*)\\s*(:)?",
+      "begin": "(?:^\\s*|(?<=[{,])\\s*)(?!@)(\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*)\\s*(:)?",
       "beginCaptures": {
         "1": {
           "name": "variable.other.property.baml"
@@ -2184,10 +2196,13 @@ const grammar = {
           "name": "punctuation.separator.colon.baml"
         }
       },
-      "end": "(?=\\})|$",
+      "end": "(?=[,}])|$",
       "patterns": [
         {
           "include": "#comments"
+        },
+        {
+          "include": "#field-type-arguments"
         },
         {
           "include": "#type-expression"
@@ -2205,6 +2220,32 @@ const grammar = {
           "name": "variable.other.readwrite.baml"
         }
       }
+    },
+    "field-type-arguments": {
+      "name": "meta.type-arguments.baml",
+      "begin": "<",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.type-arguments.begin.baml"
+        }
+      },
+      "end": ">",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.type-arguments.end.baml"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#field-type-arguments"
+        },
+        {
+          "include": "#type-expression"
+        }
+      ]
     },
     "float-literal": {
       "name": "constant.numeric.float.baml",
@@ -2408,7 +2449,7 @@ const grammar = {
     },
     "function-call-expression": {
       "name": "meta.function-call.baml",
-      "begin": "\\b(?:(\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*)\\s*(\\.)\\s*)?((?:\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*\\s*\\.\\s*)*)(\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*)\\b(?=\\s*(?:<[^(){};]*>\\s*)?\\()",
+      "begin": "\\b(?:(\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*)\\s*(\\.)\\s*)?((?:\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*\\s*\\.\\s*)*)(\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*)\\b(?=\\s*(?:<(?:[^(){};]|\\([^(){};]*\\))*>\\s*)?\\()",
       "beginCaptures": {
         "1": {
           "patterns": [
@@ -2544,6 +2585,110 @@ const grammar = {
         },
         {
           "include": "#config-block"
+        }
+      ]
+    },
+    "guard-expression": {
+      "patterns": [
+        {
+          "include": "#literal"
+        },
+        {
+          "include": "#array-expression"
+        },
+        {
+          "include": "#guard-lambda-expression"
+        },
+        {
+          "include": "#parenthesized-expression"
+        },
+        {
+          "include": "#if-expression"
+        },
+        {
+          "include": "#match-expression"
+        },
+        {
+          "include": "#spawn-expression"
+        },
+        {
+          "include": "#map-expression"
+        },
+        {
+          "include": "#constructor-expression"
+        },
+        {
+          "include": "#braced-expression"
+        },
+        {
+          "include": "#await-expression"
+        },
+        {
+          "include": "#throw-expression"
+        },
+        {
+          "include": "#catch-expression"
+        },
+        {
+          "include": "#is-pattern-expression"
+        },
+        {
+          "include": "#optional-call-expression"
+        },
+        {
+          "include": "#optional-index-expression"
+        },
+        {
+          "include": "#optional-method-call-expression"
+        },
+        {
+          "include": "#optional-field-access-expression"
+        },
+        {
+          "include": "#upcast-expression"
+        },
+        {
+          "include": "#postfix-method-call-expression"
+        },
+        {
+          "include": "#field-access-expression"
+        },
+        {
+          "include": "#tuple-field-access-expression"
+        },
+        {
+          "include": "#expression-operator"
+        },
+        {
+          "include": "#function-call-expression"
+        },
+        {
+          "include": "#dotted-expression"
+        }
+      ]
+    },
+    "guard-lambda-expression": {
+      "name": "meta.expression.lambda.baml",
+      "begin": "(?=\\((?:[^()]|\\([^()]*\\))*\\)\\s*->)",
+      "end": "(?<=\\})",
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#function-parameters"
+        },
+        {
+          "include": "#lambda-arrow"
+        },
+        {
+          "include": "#lambda-return-type"
+        },
+        {
+          "include": "#lambda-throws-clause"
+        },
+        {
+          "include": "#code-block"
         }
       ]
     },
@@ -3230,7 +3375,7 @@ const grammar = {
           "include": "#comments"
         },
         {
-          "include": "#expression"
+          "include": "#guard-expression"
         }
       ]
     },
@@ -3324,6 +3469,9 @@ const grammar = {
           "include": "#catch-expression"
         },
         {
+          "include": "#tuple-field-access-expression"
+        },
+        {
           "include": "#expression-operator"
         },
         {
@@ -3331,6 +3479,24 @@ const grammar = {
         },
         {
           "include": "#dotted-expression"
+        }
+      ]
+    },
+    "match-scrutinee-ascription": {
+      "name": "meta.type.annotation.baml",
+      "begin": ":",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.separator.colon.baml"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#type-expression"
         }
       ]
     },
@@ -3351,6 +3517,9 @@ const grammar = {
       "patterns": [
         {
           "include": "#comments"
+        },
+        {
+          "include": "#match-scrutinee-ascription"
         },
         {
           "include": "#expression"
@@ -3482,7 +3651,7 @@ const grammar = {
     },
     "optional-method-call-expression": {
       "name": "meta.function-call.optional.member.baml",
-      "begin": "(\\?\\.)\\s*(\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*)\\b(?=\\s*(?:<[^(){};]*>\\s*)?\\()",
+      "begin": "(\\?\\.)\\s*(\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*)\\b(?=\\s*(?:<(?:[^(){};]|\\([^(){};]*\\))*>\\s*)?\\()",
       "beginCaptures": {
         "1": {
           "name": "punctuation.accessor.baml"
@@ -3666,6 +3835,9 @@ const grammar = {
           "include": "#array-destructure-pattern"
         },
         {
+          "include": "#tuple-destructure-pattern"
+        },
+        {
           "include": "#bare-binding-pattern"
         },
         {
@@ -3678,7 +3850,7 @@ const grammar = {
     },
     "postfix-method-call-expression": {
       "name": "meta.function-call.member.baml",
-      "begin": "([.$])\\s*(\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*)\\b(?=\\s*(?:<[^(){};]*>\\s*)?\\()",
+      "begin": "([.$])\\s*(\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*)\\b(?=\\s*(?:<(?:[^(){};]|\\([^(){};]*\\))*>\\s*)?\\()",
       "beginCaptures": {
         "1": {
           "name": "punctuation.accessor.baml"
@@ -4600,6 +4772,47 @@ const grammar = {
       "name": "keyword.control.flow.throw.baml",
       "match": "\\bthrow\\b"
     },
+    "tuple-destructure-pattern": {
+      "name": "meta.pattern.destructure.tuple.baml",
+      "begin": "(?:\\b((?:let|const))\\b\\s*)?(\\()(?![^)\"'\\x60\\r\\n]*\\bas\\b[^)\\r\\n]*\\)\\s*\\.)(?!(?:[^()]|\\([^()]*\\))*\\)\\s*(?:->|[\\[?]))",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.declaration.binding.baml"
+        },
+        "2": {
+          "name": "punctuation.definition.group.begin.baml"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.group.end.baml"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#pattern"
+        },
+        {
+          "include": "#comma"
+        }
+      ]
+    },
+    "tuple-field-access-expression": {
+      "name": "meta.field-access.tuple.baml",
+      "match": "(?<!\\.)(\\?\\.|\\.)\\s*([0-9]+)\\b",
+      "captures": {
+        "1": {
+          "name": "punctuation.accessor.baml"
+        },
+        "2": {
+          "name": "variable.other.property.baml"
+        }
+      }
+    },
     "type-alias": {
       "name": "meta.type-alias.baml",
       "begin": "^\\s*(type)\\s+(\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*)\\s*(=)",
@@ -4677,6 +4890,9 @@ const grammar = {
           "include": "#union-operator"
         },
         {
+          "include": "#type-group"
+        },
+        {
           "include": "#type-punctuation"
         },
         {
@@ -4688,6 +4904,29 @@ const grammar = {
       "name": "meta.type-fragment.baml",
       "begin": "^\\s*(?=\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*)(?=[^:=;{}()#\"'\\r\\n]*$)(?=[^<.\\[?|\\r\\n]*[<.\\[?|]|(?:(?:int|float|bigint|string|bool|image|audio|map|json|unknown|never|Self))\\s*$)",
       "end": "$",
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#type-expression"
+        }
+      ]
+    },
+    "type-group": {
+      "name": "meta.group.type.baml",
+      "begin": "\\(",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.type.begin.baml"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.type.end.baml"
+        }
+      },
       "patterns": [
         {
           "include": "#comments"
