@@ -1896,7 +1896,7 @@ const grammar = {
     },
     "dotted-expression": {
       "name": "meta.dotted-expression.baml",
-      "match": "\\b(\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*)((?:\\s*\\.\\s*(?!as\\b\\s*<)\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*)*)\\b",
+      "match": "\\b(\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*)((?:\\s*\\.\\s*(?!upcast\\b\\s*<(?:[^(){};&+*/!%^~]|\\([^(){};]*\\))*>\\s*\\()\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*)*)\\b",
       "captures": {
         "1": {
           "patterns": [
@@ -2449,7 +2449,7 @@ const grammar = {
     },
     "function-call-expression": {
       "name": "meta.function-call.baml",
-      "begin": "\\b(?:(\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*)\\s*(\\.)\\s*)?((?:\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*\\s*\\.\\s*)*)(\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*)\\b(?=\\s*(?:<(?:[^(){};]|\\([^(){};]*\\))*>\\s*)?\\()",
+      "begin": "(?!\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*(?:\\s*\\.\\s*\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*)*?\\s*\\.\\s*upcast\\b\\s*<(?:[^(){};&+*/!%^~]|\\([^(){};]*\\))*>\\s*\\()\\b(?:(\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*)\\s*(\\.)\\s*)?((?:\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*\\s*\\.\\s*)*)(\\$?[A-Za-z_][A-Za-z0-9_-]*(?:\\$[A-Za-z_][A-Za-z0-9_-]*)*)\\b(?=\\s*(?:<(?:[^(){};]|\\([^(){};]*\\))*>\\s*)?\\()",
       "beginCaptures": {
         "1": {
           "patterns": [
@@ -5019,22 +5019,25 @@ const grammar = {
     },
     "upcast-expression": {
       "name": "meta.expression.upcast.baml",
-      "begin": "(\\.)\\s*(as)\\b(?=\\s*<)",
+      "begin": "(\\.)\\s*(upcast)\\b(?=\\s*<(?:[^(){};&+*/!%^~]|\\([^(){};]*\\))*>\\s*\\()",
       "beginCaptures": {
         "1": {
           "name": "punctuation.accessor.baml"
         },
         "2": {
-          "name": "keyword.operator.expression.as.baml"
+          "name": "keyword.operator.expression.upcast.baml"
         }
       },
-      "end": "(?<=>)",
+      "end": "(?<=\\))",
       "patterns": [
         {
           "include": "#comments"
         },
         {
           "include": "#upcast-type-arguments"
+        },
+        {
+          "include": "#call-arguments"
         }
       ]
     },
